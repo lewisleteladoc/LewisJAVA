@@ -4,4 +4,3 @@ target/
 *.jar
 .idea/
 *.iml
-.env.test.groovy
