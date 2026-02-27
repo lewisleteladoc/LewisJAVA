@@ -1,0 +1,7 @@
+target/
+.mvn/wrapper/maven-wrapper.jar
+*.class
+*.jar
+.idea/
+*.iml
+.env.test.groovy
