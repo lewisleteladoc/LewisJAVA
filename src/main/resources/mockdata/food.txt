@@ -1,0 +1,121 @@
+Category,Food Item,fdcId
+Fruit,Bananas,173944
+Fruit,Apples,171688
+Fruit,Watermelons,167765
+Fruit,Grapes,174682
+Fruit,Oranges,169097
+Fruit,Mangoes,169910
+Fruit,Strawberries,167762
+Fruit,Pineapples,169124
+Fruit,Peaches,169921
+Fruit,Pears,169118
+Vegetable,Potatoes (Russet),170030
+Vegetable,Tomatoes,170457
+Vegetable,Onions,170000
+Vegetable,Garlic,169230
+Vegetable,Cucumbers,169225
+Vegetable,Carrots,170393
+Vegetable,Bell Peppers (Green),170427
+Vegetable,Broccoli,170379
+Vegetable,Lettuce (Romaine),169249
+Vegetable,Sweet Corn,169294
+Cheese,Mozzarella,170900
+Cheese,Cheddar,173414
+Cheese,Parmesan (Hard),170912
+Cheese,Gruyere,170911
+Cheese,Brie,170894
+Cheese,Gouda,170909
+Cheese,Feta,173420
+Cheese,Blue Cheese,170893
+Cheese,Ricotta,170905
+Cheese,Monterey Jack,173423
+Milk,Whole Milk (3.25% Milkfat),171265
+Milk,Almond Milk (Unsweetened),1999632
+Milk,Oat Milk,2257045
+Milk,Soy Milk,1999630
+Milk,2% Reduced Fat Milk,171266
+Milk,Skim Milk (Fat Free),171267
+Milk,Coconut Milk (Canned),170155
+Milk,A2 Milk,2271810
+Milk,Goat Milk,171277
+Milk,Rice Milk,173167
+Beef,Ribeye Steak (Lip-on),168239
+Beef,Filet Mignon (Tenderloin),170258
+Beef,New York Strip (Top Loin),170248
+Beef,T-Bone Steak,170252
+Beef,Porterhouse Steak,170254
+Beef,Ground Beef (80/20),174032
+Beef,Brisket (Flat Half),168126
+Beef,Prime Rib (Rib Roast),170222
+Beef,Sirloin (Top Sirloin),170238
+Beef,Short Ribs,170226
+Organic Chicken,Organic Chicken Breast,2650085
+Organic Chicken,Organic Chicken Thighs,2649557
+Organic Chicken,Organic Chicken Drumsticks,2651474
+Organic Chicken,Organic Whole Chicken,2649544
+Organic Chicken,Organic Chicken Wings,2650742
+Organic Chicken,Organic Ground Chicken,2368936
+Organic Chicken,Organic Chicken Broth,2272895
+Organic Chicken,Organic Chicken Liver,1010375
+Organic Chicken,Organic Chicken Gizzards,1010376
+Organic Chicken,Organic Chicken Tenders,2650117
+Fish,Shrimp (Raw),175171
+Fish,"Salmon (Atlantic, Farmed)",175113
+Fish,"Tuna (Light, Canned in Water)",171987
+Fish,Alaska Pollock,171960
+Fish,Tilapia,172024
+Fish,Cod (Atlantic),171955
+Fish,Catfish (Channel),171954
+Fish,Pangasius (Swai),1928096
+Fish,"Crab (Blue, Cooked)",172901
+Fish,Clams (Mixed Species),174205
+Nuts,Peanuts (Raw),172430
+Nuts,Almonds (Whole Raw),170567
+Nuts,Walnuts (English Halves),170187
+Nuts,Cashews (Raw),170162
+Nuts,Pistachios (Raw),170184
+Nuts,Hazelnuts (Raw),170589
+Nuts,Pecans (Halves Raw),170182
+Nuts,Macadamia Nuts (Raw),170178
+Nuts,Brazil Nuts (Raw),170169
+Nuts,Pine Nuts (Raw),170183
+Dim Sum,Shumai (Pork and Shrimp Dumpling),171300
+Dim Sum,Har Gow (Shrimp Dumpling),171295
+Dim Sum,Char Siu Bao (Steamed BBQ Pork Bun),171294
+Dim Sum,Xiao Long Bao (Soup Dumplings),2343048
+Dim Sum,Cheong Fun (Rice Noodle Roll with Shrimp),171299
+Dim Sum,Lo Mai Gai (Sticky Rice in Lotus Leaf),171301
+Dim Sum,Lo Bak Go (Turnip Cake),171302
+Dim Sum,Fung Zao (Chicken Feet in Black Bean Sauce),171293
+Dim Sum,Dan Tat (Egg Tart),171303
+Dim Sum,Jian Dui (Sesame Balls),171297
+Eggs,Chicken Egg (Whole Raw),171287
+Eggs,Chicken Egg (White Raw),171289
+Eggs,Chicken Egg (Yolk Raw),171291
+Eggs,Chicken Egg (Hard Boiled),173424
+Eggs,Chicken Egg (Poached),171292
+Eggs,Quail Egg (Raw),171313
+Eggs,Duck Egg (Raw),171311
+Eggs,Goose Egg (Raw),171312
+Eggs,Turkey Egg (Raw),171314
+Eggs,Liquid Egg Substitute,172190
+Fruit,Mangoes,169910
+Fruit,Pineapples,169124
+Fruit,Papayas,169926
+Fruit,Guava,173044
+Fruit,Dragon Fruit (Pitaya),2344730
+Fruit,Passion Fruit,169149
+Fruit,Lychee,169145
+Fruit,Starfruit (Carambola),167756
+Fruit,Jackfruit,174687
+Fruit,Durian,174686
+Shellfish,American Lobster (Raw),175178
+Shellfish,Blue Crab (Raw),172900
+Shellfish,Atlantic Sea Scallops (Raw),174241
+Shellfish,Eastern Oysters (Raw),174213
+Shellfish,Hard Shell Clams (Quahog),174205
+Shellfish,Blue Mussels (Raw),174221
+Shellfish,Pink Shrimp (Atlantic),175173
+Shellfish,Soft Shell Clams (Steamers),174212
+Shellfish,Atlantic Razor Clams,174211
+Shellfish,Atlantic Surf Clams,174207
