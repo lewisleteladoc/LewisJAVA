@@ -2,6 +2,12 @@
     "java.configuration.updateBuildConfiguration": "disabled",
     "java.compile.nullAnalysis.mode": "disabled",
     "cSpell.words": [
-        "mockdata"
+        "addfood",
+        "addmeal",
+        "foodlist",
+        "getmealtypes",
+        "getmembermeals",
+        "mockdata",
+        "processfdc"
     ]
 }
