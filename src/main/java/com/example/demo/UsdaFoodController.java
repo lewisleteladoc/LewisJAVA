@@ -13,7 +13,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.net.URI;
 import java.util.List;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 import com.example.demo.BusinessObjects.Food;
 import com.example.demo.BusinessObjects.Meal;
 import com.example.demo.fileLoader.FoodParser;
@@ -52,6 +57,12 @@ public class UsdaFoodController {
     @Value("${USDAapiUrl}")
     private String apiUrl;
 
+     @Value("${NinjaApiKey}")
+    private String ninjaApiKey;
+
+    @Value("${NinjaApiUrl}")
+    private String ninjaApiUrl;
+
     private final TokenService tokenService;
     private final WebClient webClient;
     private final FoodParser foodParser;
@@ -64,16 +75,38 @@ public class UsdaFoodController {
         this.memberMealStore = memberMealStore;
     }    
     
-
     @GetMapping("/search")
-    public ResponseEntity<List<Food>> getFood(
+    public ResponseEntity<?> getFood(
             HttpServletRequest request,
             @RequestParam String query
     ) {
-        List<Food> foodList = foodParser.getFoodList().stream()
-                .filter(food -> food.getName().toLowerCase().contains(query.toLowerCase()))
-                .limit(20)
-                .toList();
+        // 1. Extract token from header
+        String authHeader = request.getHeader("Authorization");        
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: missing or malformed Authorization header.");
+        }
+        String token = authHeader.substring(7);
+
+        // 2. Validate token
+        List<String> scopes;
+        try {
+            scopes = tokenService.getScopes(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: " + e.getMessage());
+        }
+
+        if (scopes.contains("Invalid Token") || !scopes.contains("ReadUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: invalid token.");
+        }
+        
+        List<Food> foodList = foodParser.getFoodList()
+                                .stream()
+                                .filter(food -> food.getCalories() > 0 && food.getName().toLowerCase().contains(query.toLowerCase()))
+                                .limit(20)
+                                .toList();
         
         return foodList.isEmpty()
                 ? ResponseEntity.status(HttpStatus.NO_CONTENT).build()
@@ -81,9 +114,31 @@ public class UsdaFoodController {
     }
 
     @GetMapping("/foodlist")
-    public ResponseEntity<List<Food>> getFoodList(
+    public ResponseEntity<?> getFoodList(
             HttpServletRequest request
     ) {
+        // 1. Extract token from header
+        String authHeader = request.getHeader("Authorization");        
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: missing or malformed Authorization header.");
+        }
+        String token = authHeader.substring(7);
+
+        // 2. Validate token
+        List<String> scopes;
+        try {
+            scopes = tokenService.getScopes(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: " + e.getMessage());
+        }
+
+        if (scopes.contains("Invalid Token") || !scopes.contains("ReadUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: invalid token.");
+        }
+
         List<Food> foodList = foodParser.getFoodList();
         
         return foodList.isEmpty()
@@ -137,8 +192,95 @@ public class UsdaFoodController {
         }
     }
 
+    
     @GetMapping("/getmembermeals")
     public ResponseEntity<?> getMemberMeals(            
+            HttpServletRequest request
+    ) {
+        // 1. Extract token from header
+        String authHeader = request.getHeader("Authorization");       
+        String username = request.getHeader("X-username"); // Optional: for logging or additional checks 
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: missing or malformed Authorization header.");
+        }
+        String token = authHeader.substring(7);
+
+        // 2. Validate token
+        List<String> scopes;
+         String sub = null;
+        try {
+            sub = tokenService.getSub(token);
+            scopes = tokenService.getScopes(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: " + e.getMessage());
+        }
+
+        if (scopes.contains("Invalid Token") || !scopes.contains("ReadUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: invalid token.");
+        }
+
+        // 3. Call USDA API
+        try {
+           List<Meal> result = memberMealStore.getMeals(sub != null ? sub : username);
+
+            return ResponseEntity.ok(result);
+
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                    .body("Upstream service error.");
+        }
+    }
+
+    // getmemberlatestnumberofmeals
+    @GetMapping("/getmemberlatestnumberofmeals")
+    public ResponseEntity<?> getMemberLatestNumberOfMeals(    
+            int start,
+            int count,
+            HttpServletRequest request
+    ) {
+        // 1. Extract token from header
+        String authHeader = request.getHeader("Authorization");       
+        String username = request.getHeader("X-username"); // Optional: for logging or additional checks 
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: missing or malformed Authorization header.");
+        }
+        String token = authHeader.substring(7);
+
+        // 2. Validate token
+        List<String> scopes;
+        String sub = null;
+        try {
+            sub = tokenService.getSub(token);
+            scopes = tokenService.getScopes(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: " + e.getMessage());
+        }
+
+        if (scopes.contains("Invalid Token") || !scopes.contains("ReadUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: invalid token.");
+        }
+
+        // 3. Call USDA API
+        try {
+           List<Meal> result = memberMealStore.getmemberlatestnumberofmeals(sub != null ? sub : username, start, count);
+
+           return ResponseEntity.ok(result);
+
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                    .body("Upstream service error.");
+        }
+    }
+
+    // getLatestMeal
+    @GetMapping("/getlatestmeal")
+    public ResponseEntity<?> getLatestMeal(
             HttpServletRequest request
     ) {
         // 1. Extract token from header
@@ -166,7 +308,49 @@ public class UsdaFoodController {
 
         // 3. Call USDA API
         try {
-           List<Meal> result = memberMealStore.getMeals(username);
+           String sub = tokenService.getSub(token);
+           Meal result = memberMealStore.getLatestMeal(sub != null ? sub : username);
+
+            return ResponseEntity.ok(result);
+
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                    .body("Upstream service error.");
+        }
+    }
+
+    // getLatestMeal
+    @GetMapping("/getlatestmealid")
+    public ResponseEntity<String> getLatestMealId(
+            HttpServletRequest request
+    ) {
+        // 1. Extract token from header
+        String authHeader = request.getHeader("Authorization");       
+        String username = request.getHeader("X-username"); // Optional: for logging or additional checks 
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: missing or malformed Authorization header.");
+        }
+        String token = authHeader.substring(7);
+
+        // 2. Validate token
+        List<String> scopes;
+        try {
+            scopes = tokenService.getScopes(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: " + e.getMessage());
+        }
+
+        if (scopes.contains("Invalid Token") || !scopes.contains("ReadUser")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: invalid token.");
+        }
+
+        // 3. Call USDA API
+        try {
+           String sub = tokenService.getSub(token);
+           String result = memberMealStore.getLatestMealId(sub != null ? sub : username);
 
             return ResponseEntity.ok(result);
 
@@ -192,7 +376,9 @@ public class UsdaFoodController {
 
         // 2. Validate token
         List<String> scopes;
+        String sub;
         try {
+            sub = tokenService.getSub(token);
             scopes = tokenService.getScopes(token);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -206,7 +392,7 @@ public class UsdaFoodController {
 
         // 3. Call USDA API
         try {
-           List<Meal> result = memberMealStore.getMealTypes(username, mealType);
+           List<Meal> result = memberMealStore.getMealTypes(sub != null ? sub : username, mealType);
 
             return ResponseEntity.ok(result);
 
@@ -233,7 +419,10 @@ public class UsdaFoodController {
 
             // 2. Validate token
             List<String> scopes;
+
+            String sub = null;
             try {
+                sub = tokenService.getSub(token);
                 scopes = tokenService.getScopes(token);
             } catch (Exception e) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -251,7 +440,7 @@ public class UsdaFoodController {
             if (existingFoods.size() > 0) {
                 // Some foods found in local list
                 Meal meal = new Meal(type, existingFoods);
-                memberMealStore.addMeal(username, meal); // Example member ID
+                memberMealStore.addMeal(sub != null ? sub : username, meal); // Example member ID
                 return ResponseEntity.ok("Meal added successfully.");
             }
             
@@ -261,4 +450,49 @@ public class UsdaFoodController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");
         }
     }
+
+    // // Controller method
+    // @PostMapping("/addimage")
+    // public ResponseEntity<String> loadImage(HttpServletRequest headerRequest
+    // ) {
+    //     try {
+    //          // 1. Extract token from header
+    //         String authHeader = headerRequest.getHeader("Authorization");
+    //         String username = headerRequest.getHeader("X-username"); // Optional: for logging or additional checks
+    //         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+    //             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+    //                     .body("Unauthorized: missing or malformed Authorization header.");
+    //         }
+    //         String token = authHeader.substring(7);
+
+    //         // 2. Validate token
+    //         List<String> scopes;
+    //         try {
+    //             scopes = tokenService.getScopes(token);
+    //         } catch (Exception e) {
+    //             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+    //                     .body("Unauthorized: " + e.getMessage());
+    //         }
+
+    //         if (scopes.contains("Invalid Token") || !scopes.contains("WriteUser")) {
+    //             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+    //                     .body("Unauthorized: invalid token.");
+    //         }
+
+    //         String url = ninjaApiUrl + "/v1/imagetext";
+    //         HttpRequest request = HttpRequest.newBuilder()
+    //                 .uri(URI.create(url))
+    //                 .GET()
+    //                 .build();
+
+    //             return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+    //                 .thenAccept(response -> {
+            
+            
+    //         return ResponseEntity.ok("Some foods not found.");
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");
+    //     }
+    // }
 }

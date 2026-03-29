@@ -45,7 +45,7 @@ public class UsdaFdcIdBatchService {
                             JsonNode root = objectMapper.readTree(response.body());
                             
                             // Log description for debugging
-                            System.out.println("Processing: " + root.path("description").asText());
+                            // System.out.println("Processing: " + root.path("description").asText());
                             
                             // Find matching Food object from foodList by fdcId
                             Food matchingFood = foodList.stream()
@@ -53,7 +53,7 @@ public class UsdaFdcIdBatchService {
                                 .findFirst()
                                 .orElse(null);
                             
-                            System.out.println("Updated: " + matchingFood.getName() + " → " + matchingFood.getCalories() + " kcal (before)"); // Log before update  
+                            // System.out.println("Updated: " + matchingFood.getName() + " → " + matchingFood.getCalories() + " kcal (before)"); // Log before update  
                             // Extract calories from foodNutrients array
                             JsonNode nutrientsNode = root.path("foodNutrients");
                             if (nutrientsNode.isArray()) {
@@ -63,7 +63,7 @@ public class UsdaFdcIdBatchService {
                                     if (nutrientName.equalsIgnoreCase("Energy") && unitName.equalsIgnoreCase("KCAL")) {
                                         int calories = nutrient.path("amount").asInt(0);
                                         matchingFood.setCalories(calories);
-                                        System.out.println("Updated: " + matchingFood.getName() + " → " + calories + " kcal");
+                                        // System.out.println("Updated: " + matchingFood.getName() + " → " + calories + " kcal");
                                         break;
                                     }
                                 }
@@ -77,6 +77,7 @@ public class UsdaFdcIdBatchService {
             })
             .toList();         
          // Wait for all tasks to complete then return Void
+        System.out.println("Task size:  " + tasks.size());
         return CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0]));
     }
 }

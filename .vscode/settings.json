@@ -3,10 +3,15 @@
     "java.compile.nullAnalysis.mode": "disabled",
     "cSpell.words": [
         "addfood",
+        "addimage",
         "addmeal",
         "foodlist",
+        "getlatestmeal",
+        "getlatestmealid",
         "getmealtypes",
+        "getmemberlatestnumberofmeals",
         "getmembermeals",
+        "imagetext",
         "mockdata",
         "processfdc"
     ]
