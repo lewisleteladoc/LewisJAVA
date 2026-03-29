@@ -63,7 +63,14 @@ public class TokenService {
 
         return Collections.emptyList(); // valid token, but no scope claim present
     }
+    
+    public String getSub(String token) {
+        Claims claims = parseAndValidate(token); // throws on any invalid state
 
+        Object sub = claims.get("sub");
+
+        return sub instanceof String ? (String) sub : null; // valid token, but no sub claim present
+    }
     /**
      * Exposes raw claims for callers that need more than just scopes
      * (e.g. username, roles, custom claims).

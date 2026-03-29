@@ -1,4 +1,14 @@
 Category,Food Item,fdcId
+Vietnamese Dessert,Chè Thái (Fruit Cocktail with Coconut Milk),2346017
+Vietnamese Dessert,Chè Ba Màu (Three Color Dessert),2346018
+Vietnamese Dessert,Chè Chuối (Banana with Tapioca & Coconut),2346019
+Vietnamese Dessert,Chè Đậu Đỏ (Red Bean Sweet Soup),2346020
+Vietnamese Dessert,Chè Trôi Nước (Sticky Rice Balls in Ginger Syrup),2346021
+Vietnamese Dessert,Chè Bắp (Sweet Corn Pudding),2346022
+Vietnamese Dessert,Chè Đậu Trắng (Black-eyed Pea & Sticky Rice),2346023
+Vietnamese Dessert,Chè Khoai Môn (Taro with Sticky Rice),2346024
+Vietnamese Dessert,Chè Thạch (Jelly Dessert with Coconut Milk),2346025
+Vietnamese Dessert,Chè Sâm Bổ Lượng (Chilled Refreshing Herbal Soup),2346026
 Fruit,Bananas,173944
 Fruit,Apples,171688
 Fruit,Watermelons,167765
@@ -119,3 +129,113 @@ Shellfish,Pink Shrimp (Atlantic),175173
 Shellfish,Soft Shell Clams (Steamers),174212
 Shellfish,Atlantic Razor Clams,174211
 Shellfish,Atlantic Surf Clams,174207
+Soda,Coca-Cola Classic,14416
+Soda,Diet Coke,14146
+Soda,Coke Zero Sugar,768986
+Soda,Sprite,14461
+Soda,Dr Pepper,14149
+Soda,Fanta Orange,768924
+Soda,Mountain Dew,769224
+Soda,Ginger Ale,14409
+Soda,Root Beer,14421
+Soda,Cream Soda,771495
+Pepsi,Pepsi,771492
+Pepsi,Diet Pepsi,771493
+Pepsi,Pepsi Zero Sugar,1690013
+Pepsi,Pepsi Wild Cherry,1690016
+Pepsi,Pepsi Real Sugar,1690014
+Pepsi,Diet Pepsi Caffeine Free,771494
+Pepsi,Mtn Dew Major Melon,1690019
+Pepsi,Mug Root Beer,1690022
+Pepsi,Sierra Mist (Legacy),771497
+Pepsi,Starry Lemon Lime,2484370
+Alcohol,Beer (Regular),14003
+Alcohol,Wine (Red Table),14096
+Alcohol,Wine (White Table),14097
+Alcohol,Vodka (80 Proof),14037
+Alcohol,Whiskey (80 Proof),14550
+Alcohol,Gin (80 Proof),14037
+Alcohol,Rum (80 Proof),14050
+Alcohol,Tequila (80 Proof),14037
+Alcohol,Champagne / Sparkling Wine,14096
+Alcohol,Hard Tea (Twisted Tea),93106000
+Fruit Juice,Apple Juice (100%),9400
+Fruit Juice,Orange Juice (from concentrate),9206
+Fruit Juice,Grape Juice (Purple),9130
+Fruit Juice,Grapefruit Juice (Pink),9136
+Fruit Juice,Pineapple Juice (100%),9225
+Fruit Juice,Cranberry Juice Cocktail,14241
+Fruit Juice,Tomato Juice (Canned),11540
+Fruit Juice,Pomegranate Juice (100%),9513
+Fruit Juice,Lemonade (from concentrate),14287
+Fruit Juice,Prune Juice (Canned),9242
+Tea,Black Tea (Brewed),92302000
+Tea,Green Tea (Brewed),92302100
+Tea,Chamomile Tea (Herbal),2346011
+Tea,Peppermint Tea (Herbal),2346012
+Tea,Oolong Tea (Brewed),14355
+Tea,White Tea (Brewed),2346013
+Tea,Earl Grey Tea (Brewed),2346014
+Tea,Chai Tea (Prepared with milk),2346015
+Tea,Iced Tea (Bottled Sweetened),92309000
+Tea,Tea (Instant Powder Sweetened),14370
+Non-Dairy,Soymilk (Unsweetened/Plain),175215
+Non-Dairy,Soymilk (Sweetened/Chocolate),100411
+Non-Dairy,Almond Milk (Unsweetened/Plain),100276
+Non-Dairy,Almond Milk (Sweetened/Vanilla),11350000
+Non-Dairy,Oat Milk (Unsweetened/Plain),2257045
+Non-Dairy,Oat Milk (Sweetened/Vanilla),2346016
+Non-Dairy,Cashew Milk (Unsweetened),11350020
+Non-Dairy,Coconut Milk (Beverage/Carton),11350040
+Non-Dairy,Rice Milk (Unsweetened),100277
+Non-Dairy,Hemp Milk (Unsweetened),11350060
+Yogurt,Yogurt (Greek / Plain / Nonfat),1256
+Yogurt,Yogurt (Greek / Plain / Whole Milk),1293
+Yogurt,Yogurt (Greek / Strawberry / Nonfat),1285
+Yogurt,Yogurt (Greek / Vanilla / Lowfat),170907
+Yogurt,Yogurt (Plain / Lowfat),171278
+Yogurt,Yogurt (Fruit / Lowfat),171279
+Yogurt,Yogurt (Greek / Blueberry / Nonfat),2340772
+Yogurt,Kefir (Plain / Lowfat),11350021
+Yogurt,Soy Yogurt (Dairy-Free / Plain),11350022
+Yogurt,Almond Yogurt (Dairy-Free / Plain),11350023
+Kefir,Kefir (Plain / Lowfat),11350021
+Kefir,Kefir (Plain / Whole Milk),11350024
+Kefir,Kefir (Strawberry / Lowfat),11350025
+Kefir,Kefir (Blueberry / Lowfat),11350026
+Kefir,Kefir (Vanilla / Lowfat),11350027
+Kefir,Kefir (Peach / Lowfat),11350028
+Kefir,Kefir (Goat Milk / Plain),11350029
+Kefir,Kefir (Plain / Nonfat),11350030
+Kefir,Kefir (Mango / Lowfat),11350031
+Kefir,Kefir (Mixed Berry / Lowfat),11350032
+Burrito,Beef and Bean Burrito (Standard),173322
+Burrito,Bean and Cheese Burrito (Standard),173321
+Burrito,Chicken and Rice Burrito,11350033
+Burrito,Breakfast Burrito (Egg/Sausage/Cheese),1104395
+Burrito,Breakfast Burrito (Egg/Bacon/Potato),1104396
+Burrito,Frozen Burrito (Beef/Red Chili),173323
+Burrito,Steak and Onion Burrito,11350034
+Burrito,Chipotle Chicken Burrito (Branded),2346027
+Burrito,Taco Bell Bean Burrito (Fast Food),11350035
+Burrito,Vegetarian Burrito (Black Bean/Guacamole),11350036
+Spaghetti,Spaghetti (Dry / Enriched),169736
+Spaghetti,Spaghetti (Whole Wheat / Cooked),168918
+Spaghetti,Spaghetti with Meatballs (Canned),173307
+Spaghetti,Spaghetti with Meat Sauce (Prepared),1102693
+Spaghetti,Spaghetti with Marinara Sauce (Prepared),1102691
+Spaghetti,Spaghetti with Tomato Sauce (Canned),173306
+Spaghetti,Spaghetti (Gluten-Free / Cooked),1102685
+Spaghetti,Spaghetti Carbonara (Restaurant Style),11350037
+Spaghetti,Spaghetti Bolognese (Prepared),11350038
+Spaghetti,Spaghetti Squash (Cooked),169299
+French,Croissant (Plain / Butter),173111
+French,Quiche Lorraine (Bacon and Cheese),173302
+French,Ratatouille (Stewed Vegetables),1103632
+French,Coq Au Vin (Chicken in Wine Sauce),2346028
+French,Beef Bourguignon (Beef Stew),2346029
+French,French Onion Soup (Prepared),1101962
+French,Escargot (Snails / Prepared),174214
+French,Baguette (French Bread),11350039
+French,Crêpe (Plain / Sweet),1101168
+French,Mousse au Chocolat (Chocolate Mousse),170944

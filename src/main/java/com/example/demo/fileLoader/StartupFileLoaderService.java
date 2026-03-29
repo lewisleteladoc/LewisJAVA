@@ -15,17 +15,17 @@ public class StartupFileLoaderService implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // This runs automatically when the app starts        
-        System.out.println("================================");
-        System.out.println("Startup File Loader Service: Loading files...");
-        System.out.println("================================");        
+        // System.out.println("================================");
+        // System.out.println("Startup File Loader Service: Loading files...");
+        // System.out.println("================================");        
         loadFiles();
     }
 
     private void loadFiles() {
         // your file loading logic here
-        System.out.println("================================");
-        System.out.println("calling food parser...");
+        // System.out.println("================================");
+        // System.out.println("calling food parser...");
         foodParser.parseFoodFile();
-        System.out.println("================================");
+        // System.out.println("================================");
     }
 }
