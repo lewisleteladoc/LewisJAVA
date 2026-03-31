@@ -38,6 +38,21 @@ public class Meal {
     }
 
     public Date getDate() {
-        return date;
+        return date;        
+    }
+
+    public void removeFoodItem(String fdcId) {
+        try {
+            // Filter out the item and reassign to the list variable
+            this.foods = foods.stream()
+                .filter(f -> !f.getFdcId().equalsIgnoreCase(fdcId))
+                .toList(); // Use .collect(Collectors.toList()) if on Java 15 or below
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }        
+    }
+
+    public void removeFoodItems(List<String> fdcIds) {        
+        fdcIds.forEach(fdcId -> removeFoodItem(fdcId));
     }
 }
