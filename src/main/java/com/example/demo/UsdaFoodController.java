@@ -23,6 +23,8 @@ import com.example.demo.BusinessObjects.Food;
 import com.example.demo.BusinessObjects.Meal;
 import com.example.demo.fileLoader.FoodParser;
 import com.example.demo.DataSource.MemberMealStore;
+import java.util.Arrays;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/food")
@@ -35,6 +37,15 @@ public class UsdaFoodController {
     
         // Getters and setters
         public String getType() { return type; }            
+        public String[] getFdcIds() { return fdcIds; }        
+    }
+
+    private static class RemoveFoodRequest {
+        private String mealId;
+        private String[] fdcIds;
+    
+        // Getters and setters
+        public String getMealId() { return mealId; }            
         public String[] getFdcIds() { return fdcIds; }        
     }
 
@@ -57,11 +68,11 @@ public class UsdaFoodController {
     @Value("${USDAapiUrl}")
     private String apiUrl;
 
-     @Value("${NinjaApiKey}")
-    private String ninjaApiKey;
+    //  @Value("${NinjaApiKey}")
+    // private String ninjaApiKey;
 
-    @Value("${NinjaApiUrl}")
-    private String ninjaApiUrl;
+    // @Value("${NinjaApiUrl}")
+    // private String ninjaApiUrl;
 
     private final TokenService tokenService;
     private final WebClient webClient;
@@ -436,7 +447,11 @@ public class UsdaFoodController {
             String[] fdcIds = request.getFdcIds();
             String type = request.getType();
     
-            List<Food> existingFoods = foodParser.getFoodsByFdcIdsFoods(fdcIds);
+            List<Food> existingFoods = foodParser
+                                            .getFoodsByFdcIdsFoods(fdcIds)
+                                            .stream()
+                                            .filter(f -> f.getCalories() > 0)
+                                            .toList(); 
             if (existingFoods.size() > 0) {
                 // Some foods found in local list
                 Meal meal = new Meal(type, existingFoods);
@@ -445,6 +460,93 @@ public class UsdaFoodController {
             }
             
             return ResponseEntity.ok("Some foods not found.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");
+        }
+    }
+
+    // Controller method
+    @PutMapping("/removemealfooditem")
+    public ResponseEntity<String> removemealfooditem(@Valid @RequestBody RemoveFoodRequest request,
+        HttpServletRequest headerRequest
+    ) {
+        // return ResponseEntity.ok("removemealfooditem");
+        try {
+             // 1. Extract token from header
+            String authHeader = headerRequest.getHeader("Authorization");
+            String username = headerRequest.getHeader("X-username"); // Optional: for logging or additional checks
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: missing or malformed Authorization header.");
+            }
+            String token = authHeader.substring(7);
+
+            // 2. Validate token
+            List<String> scopes;
+
+            String sub = null;
+            try {
+                sub = tokenService.getSub(token);
+                scopes = tokenService.getScopes(token);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: " + e.getMessage());
+            }
+
+            if (scopes.contains("Invalid Token") || !scopes.contains("WriteUser")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: invalid token.");
+            }
+            String[] fdcIds = request.getFdcIds();
+            String mealId = request.getMealId();
+    
+            memberMealStore.removemealfooditem(sub != null ? sub : username, mealId,  Arrays.asList(fdcIds));
+            
+            return ResponseEntity.ok("No content");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");
+        }
+    }
+
+    // Controller method
+    @DeleteMapping("/remove")
+    public ResponseEntity<?> removeMeal(String mealId,
+        HttpServletRequest headerRequest
+    ) {
+        // return ResponseEntity.ok("removemealfooditem");
+        try {
+             // 1. Extract token from header
+            String authHeader = headerRequest.getHeader("Authorization");
+            String username = headerRequest.getHeader("X-username"); // Optional: for logging or additional checks
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: missing or malformed Authorization header.");
+            }
+            String token = authHeader.substring(7);
+
+            // 2. Validate token
+            List<String> scopes;
+
+            String sub = null;
+            try {
+                sub = tokenService.getSub(token);
+                scopes = tokenService.getScopes(token);
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: " + e.getMessage());
+            }
+
+            if (scopes.contains("Invalid Token") || !scopes.contains("WriteUser")) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body("Unauthorized: invalid token.");
+            }
+            
+            memberMealStore.removeMeal(sub != null ? sub : username, mealId);
+            
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("MealId: " + mealId + " removed.");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while processing the request.");

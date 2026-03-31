@@ -9,6 +9,7 @@ import com.example.demo.BusinessObjects.Meal;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.ArrayListMultimap;
 import java.util.Collections;
+import java.util.Optional;
  
 @Service
 public class MemberMealStore {
@@ -32,6 +33,20 @@ public class MemberMealStore {
     public List<Meal> getMeals(String memberId) {
         return memberMeals.getOrDefault(memberId, new ArrayList<>());
     }
+
+    public void removemealfooditem(String memberId, String mealId, List<String> itemsToRemove) {
+        List<Meal> allMeals = getMeals(memberId);
+        Meal found = null;
+        for (Meal meal : allMeals) {
+            if (meal.getId().equalsIgnoreCase(mealId)) {
+                found = meal; // Found it
+                break;
+            }
+        }
+        if (found != null) {
+            found.removeFoodItems(itemsToRemove);
+        }
+    }    
 
     // getmemberlatestnumberofmeals
     public List<Meal> getmemberlatestnumberofmeals(String memberId, int start, int count) {

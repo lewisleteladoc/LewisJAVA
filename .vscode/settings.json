@@ -13,6 +13,7 @@
         "getmembermeals",
         "imagetext",
         "mockdata",
-        "processfdc"
+        "processfdc",
+        "removemealfooditem"
     ]
 }
