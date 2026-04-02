@@ -5,26 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClient;
-
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-
-import java.net.URI;
 import java.util.List;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 import com.example.demo.BusinessObjects.Food;
 import com.example.demo.BusinessObjects.Meal;
 import com.example.demo.fileLoader.FoodParser;
 import com.example.demo.DataSource.MemberMealStore;
+import com.example.demo.BusinessObjects.UsdaFoodSearch;
 import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/food")
@@ -49,19 +39,8 @@ public class UsdaFoodController {
         public String[] getFdcIds() { return fdcIds; }        
     }
 
-     // ── Request body: add member ──────────────────────────────────────────────
-    // private static class AddMemberRequest {
-    //     @NotBlank(message = "name is required")
-    //     private String name;
-
-    //     @NotNull(message = "age is required")
-    //     @Min(value = 0, message = "age must be 0 or greater")
-    //     private Integer age;
-
-    //     public String getName()  { return name; }
-    //     public Integer getAge()  { return age; }
-    // }
-
+    private final UsdaFoodSearch usdaFoodSearch;
+     
     @Value("${USDAapiKey}")
     private String apiKey;
 
@@ -79,11 +58,14 @@ public class UsdaFoodController {
     private final FoodParser foodParser;
     private final MemberMealStore memberMealStore;
 
-    public UsdaFoodController(TokenService tokenService, WebClient webClient, FoodParser foodParser, MemberMealStore memberMealStore) {
+    public UsdaFoodController(TokenService tokenService, WebClient webClient, FoodParser foodParser, MemberMealStore memberMealStore,
+        UsdaFoodSearch usdaFoodSearch
+    ) {
         this.tokenService = tokenService;
         this.webClient = webClient;
         this.foodParser = foodParser;
         this.memberMealStore = memberMealStore;
+        this.usdaFoodSearch = usdaFoodSearch;
     }    
     
     @GetMapping("/search")
@@ -122,6 +104,56 @@ public class UsdaFoodController {
         return foodList.isEmpty()
                 ? ResponseEntity.status(HttpStatus.NO_CONTENT).build()
                 : ResponseEntity.ok(foodList);
+    }
+
+    @GetMapping("/search2")
+    public ResponseEntity<?> getFood2(
+            HttpServletRequest request,
+            @RequestParam String query
+    ) {
+        // 1. Extract token from header
+        String authHeader = request.getHeader("Authorization");        
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return 
+                ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: missing or malformed Authorization header.");
+        }
+        String token = authHeader.substring(7);
+
+        // 2. Validate token
+        List<String> scopes;
+        try {
+            scopes = tokenService.getScopes(token);
+        } catch (Exception e) {            
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: " + e.getMessage());
+        }
+
+        if (scopes != null && (scopes.contains("Invalid Token") || !scopes.contains("ReadUser"))) {            
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized: invalid token.");
+        }
+        
+        // 3. Check local data first
+        List<Food> foodList = foodParser.getFoodList()
+                                .stream()
+                                .filter(food -> food.getCalories() > 0 && food.getName().toLowerCase().contains(query.toLowerCase()))
+                                .limit(20)
+                                .toList();
+        
+        // 4. Logic: If found locally, return immediately. If not, call USDA.
+        if (!foodList.isEmpty()) {
+            return ResponseEntity.ok(foodList);
+        }
+
+        // Call the Async USDA service and transform the result into a ResponseEntity
+        try {
+            List<Food> returnValue = usdaFoodSearch.search(query);
+            return ResponseEntity.ok(returnValue);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("query: " + query + " not found.");
+        }        
     }
 
     @GetMapping("/foodlist")
