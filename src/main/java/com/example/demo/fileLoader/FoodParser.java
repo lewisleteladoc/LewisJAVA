@@ -3,6 +3,7 @@ package com.example.demo.fileLoader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import com.example.demo.BusinessObjects.UsdaFdcIdBatchService;
 @Service
 public class FoodParser {
 
-    private List<Food> foodList = new ArrayList<Food>();
+   private List<Food> foodList = new ArrayList<>(); // Use diamond operator
     private final UsdaFdcIdBatchService usdaFdcIdBatchService;
 
     public FoodParser(UsdaFdcIdBatchService usdaFdcIdBatchService) {
@@ -23,7 +24,25 @@ public class FoodParser {
     }
     
     public List<Food> getFoodList() {
-        return foodList;
+        // Return a copy if you want to prevent external callers from modifying your list
+        return new ArrayList<>(foodList);
+    }
+
+    public void appendFoodList(List<Food> newFoods) {
+
+        // Build a set of existing fdcIds for O(1) lookup instead of O(n) loop
+        Set<String> existingIds = foodList.stream()
+                .map(Food::getFdcId)
+                .collect(Collectors.toSet());
+
+        List<Food> temp = newFoods.stream()
+                .filter(newFood -> !existingIds.contains(newFood.getFdcId()))
+                .toList();
+
+        if (!temp.isEmpty()) {
+            ((ArrayList<Food>) foodList).ensureCapacity(foodList.size() + temp.size());
+            foodList.addAll(temp);
+        }
     }
 
     public List<Food> getFoodsByFdcIdsFoods(String[] fdcIds) {

@@ -32,12 +32,19 @@ public class UsdaFdcIdBatchService {
         // Create async tasks for each fdcId — equivalent to Task.WhenAll
         List<CompletableFuture<Void>> tasks = fdcIdsList.stream()
             .map(fdcId -> {
-                String url = usdaApiUrl + "/fdc/v1/food/" + fdcId + "?format=abridged&api_key=" + usdaApiKey;
+                String url = usdaApiUrl + "/fdc/v1/food/" + fdcId + "?format=abridged";
+
+                // HttpRequest request = HttpRequest.newBuilder()
+                //     .uri(URI.create(url))
+                //     .GET()
+                //     .build();
 
                 HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .GET()
-                    .build();
+                .uri(URI.create(url))
+                .header("Accept", "application/json")
+                .header("x-api-key", usdaApiKey)
+                .GET()
+                .build();
 
                 return httpClient.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
