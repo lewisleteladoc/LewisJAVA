@@ -2,10 +2,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Spring Boot-LewisJavaApplication<demo>",
+            "name": "Spring Boot-HypertensionJavaApplication<demo>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "com.example.demo.LewisJavaApplication",
+            "mainClass": "com.example.demo.HypertensionJavaApplication",
             "projectName": "demo",
             "args": "",
             "envFile": "${workspaceFolder}/.env"

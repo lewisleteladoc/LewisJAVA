@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_package = "com.example.demo.grpc";
+
+service BloodPressureReadingService {
+    return GetBloodPressureReadingDetails (BloodPressureReadingRequest) returns (BloodPressureReadingResponse);
+}
+
+message BloodPressureReadingRequest {
+    integer id = 1;    
+}
+
+message BloodPressureReadingRequest {    
+    integer systolic = 1;
+    integer diastolic = 2;
+    integer heartRate = 3;
+    Date date = 4;
+}
+
+
+ 

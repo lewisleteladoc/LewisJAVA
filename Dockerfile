@@ -23,7 +23,7 @@ COPY src src
 RUN ./mvnw clean package -DskipTests
 
 # 5. Expose the port Spring Boot uses
-EXPOSE 8082
+EXPOSE 8084
 
 # 6. Start the application
 CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]

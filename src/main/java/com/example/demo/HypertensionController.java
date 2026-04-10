@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 @RestController
 @RequestMapping("/api/food")
-public class UsdaFoodController {
+public class HypertensionApplication {
 
     // Request body class
     private static class AddFoodRequest {
@@ -53,7 +53,7 @@ public class UsdaFoodController {
     // private final FoodParser foodParser;
     // private final MemberMealStore memberMealStore;
 
-    public UsdaFoodController(TokenService tokenService, WebClient webClient) {
+    public HypertensionApplication(TokenService tokenService, WebClient webClient) {
         this.tokenService = tokenService;
         this.webClient = webClient;        
     }    
